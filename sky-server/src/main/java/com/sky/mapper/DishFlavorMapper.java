@@ -1,5 +1,7 @@
 package com.sky.mapper;
 
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +14,6 @@ public interface DishFlavorMapper {
      * @param flavors
      */
     void insertBatch(List<DishFlavor> flavors);
+
+    void deleteByDishId(List<Long> ids);
 }
