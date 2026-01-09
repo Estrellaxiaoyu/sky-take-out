@@ -14,12 +14,14 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +36,8 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private DishService dishService;
 
     /**
      * 新增菜品和对应的口味
@@ -97,5 +101,37 @@ public class DishServiceImpl implements DishService {
 
         // 删除菜品关联的口味数据
          dishFlavorMapper.deleteByDishId(ids);
+    }
+
+    @Override
+    public DishVO selectById(Long id) {
+        // 根据id获取菜品
+        Dish dish = dishMapper.getById(id);
+        // 根据dishId获取口味
+        List<DishFlavor> dishFlavor = dishFlavorMapper.getByDishId(id);
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavor);
+        return dishVO;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        // 修改菜品
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.update(dish);
+
+        // 修改口味，先删除再插入
+            // 删除
+        List ids = new ArrayList<>();
+        ids.add(dishDTO.getId());
+        dishFlavorMapper.deleteByDishId(ids);
+            // 插入
+        Long dishId = dish.getId();
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        flavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishId);});
+        dishFlavorMapper.insertBatch(flavors);
+
     }
 }

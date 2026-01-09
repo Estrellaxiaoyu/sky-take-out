@@ -8,6 +8,22 @@
         values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime},
                 #{createUser}, #{updateUser})
     </insert>
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUser != null">reate_user = #{createUser},</if>
+            <if test="updateUser != null">update_user = #{updateUser}</if>
+        </set>
+        where id = #{id}
+    </update>
     <delete id="deleteByIds">
         delete
         from dish
@@ -21,14 +37,7 @@
         <where>
             <if test="name != null">name like concat('%', name, ',')</if>
             <if test="categoryId != null">and category_id = #{categoryId}</if>
-            <if test="price != null">and price = #{price}</if>
-            <if test="image != null">and image = #{image}</if>
-            <if test="description != null">and description = #{description}</if>
             <if test="status != null">and status = #{status}</if>
-            <if test="createTime != null">and create_time = #{createTime}</if>
-            <if test="updateTime != null">and update_time = #{updateTime}</if>
-            <if test="createUser != null">and create_user = #{createUser}</if>
-            <if test="updateUser != null">and update_user = #{updateUser}</if>
         </where>
     </select>
 </mapper>
