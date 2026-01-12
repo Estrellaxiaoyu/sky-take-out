@@ -27,7 +27,7 @@ public interface SetmealMapper {
     void insert(Setmeal setmeal);
 
     @Select("select * from setmeal where id = #{id}")
-    Setmeal getById(Integer id);
+    Setmeal getById(Long id);
 
     Page<Setmeal> select(Setmeal setmeal);
 

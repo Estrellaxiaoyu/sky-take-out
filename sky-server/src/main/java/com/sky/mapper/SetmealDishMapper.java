@@ -12,7 +12,7 @@ import java.util.List;
 public interface SetmealDishMapper {
 
     @Select("select * from setmeal_dish where setmeal_id = #{setmealId}")
-    List<SetmealDish> getBySetmealId(Integer setmealId);
+    List<SetmealDish> getBySetmealId(Long setmealId);
 
     List<Long> getSetmealIdByDishIds(List<Long> DishIds);
 
@@ -23,5 +23,5 @@ public interface SetmealDishMapper {
     void deleteBySetmealId(Long setmealId);
 
     @Update("update setmeal set status = #{status} where id = #{setmealId}")
-    void setStatus(Integer status, Integer setmealId);
+    void setStatus(Integer status, Long setmealId);
 }

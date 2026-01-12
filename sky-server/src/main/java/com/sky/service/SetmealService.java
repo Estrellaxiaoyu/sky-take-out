@@ -12,13 +12,13 @@ import java.util.List;
 public interface SetmealService {
     void insert(SetmealDTO setmealDTO);
 
-    SetmealVO getById(Integer id);
+    SetmealVO getById(Long id);
 
     PageResult page(SetmealPageQueryDTO setmealPageQueryDTO);
 
     void update(SetmealDTO setmealDTO);
 
-    void setStatus(Integer status, Integer setmealId);
+    void setStatus(Integer status, Long setmealId);
 
     void deleteByIds(List<Long> ids);
 

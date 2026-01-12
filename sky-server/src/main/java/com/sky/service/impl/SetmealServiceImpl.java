@@ -45,7 +45,7 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     @Override
-    public SetmealVO getById(Integer id) {
+    public SetmealVO getById(Long id) {
         // 根据id查询套餐
         Setmeal setmeal = setmealMapper.getById(id);
 
@@ -80,14 +80,16 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDishMapper.deleteBySetmealId(setmealId);
         // 再插入
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
-        setmealDishes.forEach(setmealDish -> {
-            setmealDish.setSetmealId(setmealId);
-            setmealDishMapper.insert(setmealDish);
-        });
+        if (setmealDishes != null && setmealDishes.size() > 0) {
+            setmealDishes.forEach(setmealDish -> {
+                setmealDish.setSetmealId(setmealId);
+                setmealDishMapper.insert(setmealDish);
+            });
+        }
     }
 
     @Override
-    public void setStatus(Integer status, Integer setmealId) {
+    public void setStatus(Integer status, Long setmealId) {
         setmealDishMapper.setStatus(status, setmealId);
     }
 
@@ -106,8 +108,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @return
      */
     public List<Setmeal> list(Setmeal setmeal) {
-        List<Setmeal> list = setmealMapper.list(setmeal);
-        return list;
+        return setmealMapper.list(setmeal);
     }
 
     /**

@@ -116,6 +116,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @Transactional
     public void updateWithFlavor(DishDTO dishDTO) {
         // 修改菜品
         Dish dish = new Dish();
@@ -130,8 +131,10 @@ public class DishServiceImpl implements DishService {
             // 插入
         Long dishId = dish.getId();
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        flavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishId);});
-        dishFlavorMapper.insertBatch(flavors);
+        if (flavors != null && flavors.size() > 0) {
+            flavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishId);});
+            dishFlavorMapper.insertBatch(flavors);
+        }
 
     }
 
@@ -167,5 +170,10 @@ public class DishServiceImpl implements DishService {
         }
 
         return dishVOList;
+    }
+
+    @Override
+    public void setStatus(Integer status, Long id) {
+        dishMapper.setStatus(status, id);
     }
 }
